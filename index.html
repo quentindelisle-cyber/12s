@@ -109,7 +109,10 @@
         </div>
 
         <div class="gallery">
-          <h2>Galerie des photos finish</h2>
+          <div class="row" style="justify-content:space-between;align-items:center;">
+            <h2 style="margin:0;">Galerie des photos finish</h2>
+            <button id="btnClearGallery" class="secondary">Effacer la galerie</button>
+          </div>
           <div id="galleryGrid" class="thumb-grid"></div>
           <p id="galleryEmpty" class="note">Aucune photo pour le moment.</p>
         </div>
@@ -132,6 +135,7 @@
     const btnStop = $('btnStop');
     const btnTestBeep = $('btnTestBeep');
     const btnFullscreen = $('btnFullscreen');
+    const btnClearGallery = $('btnClearGallery');
     const timeDisplay = $('timeDisplay');
     const statusEl = $('status');
     const video = $('video');
@@ -147,6 +151,8 @@
     let audioCtx = null;
     let takingPhoto = false;
     let photoIndex = 0;
+    let galleryItems = [];
+    let lastObjectUrl = null;
     let lastObjectUrl = null;
     const galleryItems = [];
 
@@ -265,6 +271,28 @@
       galleryEmpty.classList.toggle('hidden', galleryItems.length > 0);
     }
 
+    function clearGallery() {
+      galleryItems.forEach((item) => {
+        try {
+          if (item.url && item.url.startsWith('blob:') && item.url !== lastObjectUrl) URL.revokeObjectURL(item.url);
+        } catch (e) {}
+      });
+      galleryItems = [];
+      galleryGrid.innerHTML = '';
+      galleryEmpty.classList.remove('hidden');
+      if (!photo.classList.contains('hidden')) {
+        if (lastObjectUrl) {
+          try { URL.revokeObjectURL(lastObjectUrl); } catch (e) {}
+          lastObjectUrl = null;
+        }
+        photo.removeAttribute('src');
+        photo.classList.add('hidden');
+      }
+      downloadLink.removeAttribute('href');
+      downloadLink.classList.add('hidden');
+      setStatus('Galerie effacée');
+    }
+
     async function capturePhoto() {
       if (takingPhoto) return;
       takingPhoto = true;
@@ -326,6 +354,7 @@
     btnReset.addEventListener('click', resetCountdown);
     btnTestBeep.addEventListener('click', strongBeepPattern);
     btnFullscreen.addEventListener('click', toggleFullscreen);
+    btnClearGallery?.addEventListener('click', clearGallery);
     window.addEventListener('beforeunload', stopCamera);
     renderTime();
     if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(console.error); }); }
