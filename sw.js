@@ -1,8 +1,10 @@
-const CACHE_NAME = 'decompte-photo-v1';
+const CACHE_NAME = 'relais-12s-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './sw.js',
+  './icon-square.png',
   './icon-192.png',
   './icon-512.png'
 ];
@@ -20,7 +22,5 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
-  );
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
 });
