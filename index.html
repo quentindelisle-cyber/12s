@@ -3,255 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1836" />
+  <meta name="theme-color" content="#0f172a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Relais 12s" />
-  <title>Relais 12s</title>
+  <meta name="apple-mobile-web-app-title" content="Décompte Photo" />
+  <title>Décompte Photo</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="icon-192.png" />
   <style>
     :root {
-      --bg1: #071225;
-      --bg2: #0b1836;
-      --card: rgba(10, 22, 48, 0.90);
-      --card-border: rgba(255,255,255,0.14);
-      --text: #f8fbff;
-      --muted: #c5d6f4;
-      --blue: #2e79ff;
-      --blue2: #6eb2ff;
-      --green: #22c55e;
-      --red: #ef4444;
-      --yellow: #f2c94c;
+      --bg: #0f172a;
+      --card: #111827;
+      --card2: #1f2937;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --border: rgba(255,255,255,0.12);
     }
     * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background: radial-gradient(circle at top, #12376f 0%, var(--bg2) 35%, var(--bg1) 100%);
-      color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
+    html, body { margin: 0; padding: 0; background: linear-gradient(180deg, #0f172a 0%, #111827 100%); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     body { min-height: 100vh; }
-    .app {
-      width: min(100%, 1040px);
-      margin: 0 auto;
-      padding: 16px 16px 64px;
-      position: relative;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-    .brand img.logo {
-      width: clamp(70px, 12vw, 100px);
-      height: clamp(70px, 12vw, 100px);
-      object-fit: contain;
-      border-radius: 22px;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.28);
-      background: rgba(255,255,255,0.08);
-    }
-    .brand-text h1 {
-      margin: 0;
-      font-size: clamp(1.55rem, 3.2vw, 2.5rem);
-      line-height: 1;
-    }
-    .brand-text .sub {
-      margin-top: 6px;
-      color: var(--muted);
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      font-size: clamp(.82rem, 1.6vw, 1rem);
-    }
-    .top-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media (min-width: 900px) {
-      .grid { grid-template-columns: 380px 1fr; }
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 26px;
-      padding: 16px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
-      backdrop-filter: blur(8px);
-    }
-    .card h2 {
-      margin: 0 0 14px;
-      font-size: 1.08rem;
-    }
+    .app { width: min(100%, 980px); margin: 0 auto; padding: 16px 16px 32px; }
+    .title { display:flex; align-items:center; gap:12px; margin-bottom: 16px; }
+    .badge { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #1e293b, #334155); display:grid; place-items:center; font-size: 22px; }
+    h1 { font-size: clamp(1.4rem, 2.5vw, 2rem); margin: 0; }
+    .subtitle { color: var(--muted); margin-top: 4px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 860px) { .grid { grid-template-columns: 360px 1fr; } }
+    .card { background: rgba(17, 24, 39, 0.92); border: 1px solid var(--border); border-radius: 22px; padding: 16px; box-shadow: 0 12px 28px rgba(0,0,0,0.22); }
+    .card h2 { margin: 0 0 12px; font-size: 1.1rem; }
     .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .row + .row { margin-top: 12px; }
-    label { font-weight: 800; }
-    input[type="number"] {
-      width: 120px;
-      background: rgba(3, 10, 22, 0.88);
-      color: var(--text);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 12px 14px;
-      font-size: 1rem;
-      font-weight: 700;
+    label { font-weight: 600; }
+    input[type="number"], select {
+      width: 110px; background: #0b1220; color: var(--text); border: 1px solid var(--border); border-radius: 14px;
+      padding: 10px 12px; font-size: 1rem;
     }
-    button, a.dl {
-      appearance: none;
-      border: none;
-      border-radius: 18px;
-      padding: 13px 15px;
-      min-height: 50px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: white;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+    button {
+      appearance: none; border: none; border-radius: 16px; padding: 12px 14px; font-size: 1rem; font-weight: 700;
+      color: white; cursor: pointer; min-height: 48px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      box-shadow: 0 8px 18px rgba(37,99,235,0.35);
     }
-    button.primary { background: linear-gradient(135deg, #1d63ff, #5ba1ff); box-shadow: 0 10px 20px rgba(46,121,255,.33); }
-    button.secondary { background: linear-gradient(135deg, #31415f, #5d6f90); }
-    button.success { background: linear-gradient(135deg, #139245, #22c55e); box-shadow: 0 10px 20px rgba(34,197,94,.23); }
-    button.warn { background: linear-gradient(135deg, #d29812, #f2c94c); color: #13233f; box-shadow: 0 10px 20px rgba(242,201,76,.26); }
-    button.danger { background: linear-gradient(135deg, #c52d2d, #ef4444); box-shadow: 0 10px 20px rgba(239,68,68,.23); }
+    button.secondary { background: linear-gradient(135deg, #334155, #475569); box-shadow: none; }
+    button.success { background: linear-gradient(135deg, #15803d, #22c55e); box-shadow: 0 8px 18px rgba(34,197,94,0.25); }
+    button.warn { background: linear-gradient(135deg, #b45309, #f59e0b); box-shadow: 0 8px 18px rgba(245,158,11,0.25); }
+    button.danger { background: linear-gradient(135deg, #b91c1c, #ef4444); box-shadow: 0 8px 18px rgba(239,68,68,0.25); }
     button:disabled { opacity: .55; cursor: not-allowed; }
     .full { width: 100%; }
-    .split > * { flex: 1 1 0; }
     .timer {
-      margin-top: 8px;
-      border-radius: 28px;
-      min-height: 210px;
-      border: 1px solid var(--card-border);
-      background:
-        radial-gradient(circle at top, rgba(91,161,255,.18), transparent 54%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
-        rgba(5, 14, 29, 0.95);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 20px;
+      display:grid; place-items:center; min-height: 180px; border-radius: 24px;
+      background: radial-gradient(circle at top, rgba(59,130,246,.18), transparent 55%), #0b1220;
+      border: 1px solid var(--border);
+      text-align: center; margin-top: 6px;
     }
-    .time {
-      font-size: clamp(3.2rem, 12vw, 5.8rem);
-      font-weight: 900;
-      line-height: .95;
-      letter-spacing: 1px;
-      text-shadow: 0 0 20px rgba(110,178,255,.18);
-    }
-    .status { margin-top: 8px; color: var(--muted); font-size: 1rem; font-weight: 700; }
-    .video-wrap {
-      position: relative;
-      border-radius: 28px;
-      overflow: hidden;
-      background: #000;
-      border: 1px solid var(--card-border);
-      aspect-ratio: 3 / 4;
-    }
-    video, canvas.preview, img#photo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      background: #000;
-    }
+    .time { font-size: clamp(3rem, 10vw, 5rem); font-weight: 800; letter-spacing: 1px; }
+    .status { color: var(--muted); margin-top: 6px; font-size: 0.98rem; }
+    .video-wrap { position: relative; border-radius: 24px; overflow: hidden; background: #000; border: 1px solid var(--border); aspect-ratio: 3 / 4; }
+    video, canvas.preview { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
     .camera-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      padding: 12px;
-      pointer-events: none;
+      position: absolute; inset: 0; display:flex; align-items:flex-start; justify-content:space-between; padding: 12px; pointer-events:none;
     }
-    .pill {
-      background: rgba(7, 18, 37, .78);
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: .92rem;
-      font-weight: 700;
-      backdrop-filter: blur(8px);
-    }
+    .pill { background: rgba(15,23,42,.72); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 8px 12px; font-size: .9rem; }
     .gallery { margin-top: 16px; }
-    .gallery h2 { margin-bottom: 10px; }
+    .gallery img { width: 100%; border-radius: 18px; display:block; border: 1px solid var(--border); }
+    .note { color: var(--muted); font-size: .94rem; line-height: 1.4; }
     .hidden { display: none !important; }
-    .footer-signature {
-      position: fixed;
-      right: 12px;
-      bottom: calc(10px + env(safe-area-inset-bottom));
-      z-index: 20;
-      color: rgba(255,255,255,.92);
-      font-size: clamp(.9rem, 2vw, 1.05rem);
-      font-style: italic;
-      font-weight: 700;
-      text-shadow: 0 2px 8px rgba(0,0,0,.45);
-      pointer-events: none;
-    }
-    .footer-note {
-      margin-top: 14px;
-      text-align: center;
-      color: var(--muted);
-      font-size: .86rem;
-    }
-    @media (max-width: 620px) {
-      .header { align-items: flex-start; flex-direction: column; }
-      .top-actions { width: 100%; justify-content: stretch; }
-      .top-actions > * { flex: 1 1 0; }
+    .footer { margin-top: 16px; color: var(--muted); font-size: .85rem; text-align:center; }
+    a.dl {
+      display:inline-flex; align-items:center; justify-content:center; text-decoration:none; color:white; margin-top: 10px;
+      border-radius: 16px; min-height: 48px; padding: 12px 14px; font-weight: 700; background: linear-gradient(135deg, #15803d, #22c55e);
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <header class="header">
-      <div class="brand">
-        <img class="logo" src="icon-square.png" alt="Logo Relais 12s" />
-        <div class="brand-text">
-          <h1>Relais 12s</h1>
-          <div class="sub">Sprint • Décompte • Photo</div>
-        </div>
+    <div class="title">
+      <div class="badge">⏱️</div>
+      <div>
+        <h1>Décompte Photo</h1>
+        <div class="subtitle">Compte à rebours réglable, bip final, puis photo automatique</div>
       </div>
-      <div class="top-actions">
-        <button id="btnFullscreen" class="warn">Plein écran</button>
-      </div>
-    </header>
+    </div>
 
     <div class="grid">
       <section class="card">
         <h2>Réglages</h2>
         <div class="row">
           <label for="seconds">Durée</label>
-          <input id="seconds" type="number" min="1" max="3600" value="12" />
+          <input id="seconds" type="number" min="1" max="3600" value="5" />
           <span>secondes</span>
         </div>
         <div class="row">
-          <button id="btnCamera" class="primary full">Autoriser / démarrer la caméra arrière</button>
+          <label for="cameraFacing">Caméra</label>
+          <select id="cameraFacing">
+            <option value="environment">Arrière</option>
+            <option value="user">Avant</option>
+          </select>
+        </div>
+        <div class="row">
+          <button id="btnCamera" class="full">Autoriser / démarrer la caméra</button>
         </div>
         <div class="row">
           <button id="btnStart" class="success full">Lancer le décompte</button>
         </div>
-        <div class="row split">
-          <button id="btnReset" class="secondary">Réinitialiser le décompte</button>
-          <button id="btnStop" class="danger" disabled>Arrêter</button>
+        <div class="row">
+          <button id="btnStop" class="danger full" disabled>Arrêter</button>
         </div>
         <div class="row">
           <button id="btnTestBeep" class="secondary full">Tester le bip</button>
@@ -259,41 +120,48 @@
 
         <div class="timer">
           <div>
-            <div id="timeDisplay" class="time">00:12</div>
+            <div id="timeDisplay" class="time">00:05</div>
             <div id="status" class="status">Prêt</div>
           </div>
         </div>
+
+        <div class="row" style="margin-top:14px;">
+          <button id="btnFullscreen" class="warn full">Plein écran</button>
+        </div>
+
+        <p class="note" style="margin-top:14px;">
+          La photo automatique fonctionne après autorisation caméra. Selon le navigateur, la capture utilise soit l’API photo du terminal, soit une image capturée depuis le flux vidéo.
+        </p>
       </section>
 
       <section class="card">
         <h2>Aperçu caméra</h2>
         <div class="video-wrap">
           <video id="video" playsinline autoplay muted></video>
-          <canvas id="canvas" class="preview hidden"></canvas>
-          <img id="photo" alt="Dernière photo capturée" class="hidden" />
           <div class="camera-overlay">
             <div class="pill" id="cameraState">Caméra inactive</div>
-            <div class="pill">Capture auto</div>
+            <div class="pill" id="captureMode">Capture auto</div>
           </div>
         </div>
 
         <div class="gallery">
-          <a id="downloadLink" class="dl hidden" download="photo-relais-12s.png">Télécharger la photo</a>
+          <h2 style="margin-bottom:10px;">Dernière photo</h2>
+          <canvas id="canvas" class="preview hidden"></canvas>
+          <img id="photo" alt="Dernière photo capturée" class="hidden" />
+          <a id="downloadLink" class="dl hidden" download="photo-decompte.png">Télécharger la photo</a>
         </div>
       </section>
     </div>
 
-    <div class="footer-note">PWA locale — fonctionne mieux en HTTPS ou après installation.</div>
+    <div class="footer">PWA locale — fonctionne mieux en HTTPS ou après installation.</div>
   </div>
-
-  <div class="footer-signature">by Quentin Delisle</div>
 
   <script>
     const $ = (id) => document.getElementById(id);
     const secondsInput = $('seconds');
+    const cameraFacing = $('cameraFacing');
     const btnCamera = $('btnCamera');
     const btnStart = $('btnStart');
-    const btnReset = $('btnReset');
     const btnStop = $('btnStop');
     const btnTestBeep = $('btnTestBeep');
     const btnFullscreen = $('btnFullscreen');
@@ -307,10 +175,9 @@
 
     let stream = null;
     let countdownTimer = null;
-    let remaining = Number(secondsInput.value || 12);
+    let remaining = Number(secondsInput.value || 5);
     let audioCtx = null;
     let takingPhoto = false;
-    let lastObjectUrl = null;
 
     function fmt(seconds) {
       const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -332,58 +199,32 @@
       return audioCtx;
     }
 
-    function strongBeepPattern() {
+    function beep(duration = 220, frequency = 1200, volume = 0.08) {
       const ctx = ensureAudio();
-      const total = 3;
-      for (let i = 0; i < total; i++) {
-        const start = ctx.currentTime + i * 0.16;
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc1.type = 'square';
-        osc2.type = 'triangle';
-        osc1.frequency.setValueAtTime(2200, start);
-        osc2.frequency.setValueAtTime(3150, start);
-        gain.gain.setValueAtTime(0.0001, start);
-        gain.gain.exponentialRampToValueAtTime(0.42, start + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.12);
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-        osc1.start(start);
-        osc2.start(start);
-        osc1.stop(start + 0.13);
-        osc2.stop(start + 0.13);
-      }
-      if (navigator.vibrate) navigator.vibrate([80, 30, 80, 30, 80]);
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = frequency;
+      gain.gain.value = volume;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration / 1000);
+      osc.stop(ctx.currentTime + duration / 1000);
     }
 
     async function startCamera() {
       stopCamera();
       try {
         setStatus('Demande d’autorisation caméra...');
-        const baseConstraints = {
+        stream = await navigator.mediaDevices.getUserMedia({
           video: {
+            facingMode: { ideal: cameraFacing.value },
             width: { ideal: 1920 },
-            height: { ideal: 1080 },
-            facingMode: { exact: 'environment' }
+            height: { ideal: 1080 }
           },
           audio: false
-        };
-
-        try {
-          stream = await navigator.mediaDevices.getUserMedia(baseConstraints);
-        } catch (err) {
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-              width: { ideal: 1920 },
-              height: { ideal: 1080 },
-              facingMode: { ideal: 'environment' }
-            },
-            audio: false
-          });
-        }
-
+        });
         video.srcObject = stream;
         await video.play();
         cameraState.textContent = 'Caméra active';
@@ -391,7 +232,7 @@
       } catch (err) {
         cameraState.textContent = 'Caméra inactive';
         setStatus('Accès caméra refusé ou indisponible');
-        alert('Impossible d’accéder à la caméra arrière. Vérifie les permissions et utilise HTTPS ou une PWA installée.');
+        alert('Impossible d’accéder à la caméra. Vérifie les permissions et utilise HTTPS ou une PWA installée.');
         console.error(err);
       }
     }
@@ -413,7 +254,6 @@
           setStatus('Décompte terminé — pas de caméra active');
           return;
         }
-
         const track = stream.getVideoTracks()[0];
         let blob = null;
 
@@ -436,9 +276,7 @@
           blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
         }
 
-        if (lastObjectUrl) URL.revokeObjectURL(lastObjectUrl);
         const url = URL.createObjectURL(blob);
-        lastObjectUrl = url;
         photo.src = url;
         photo.classList.remove('hidden');
         canvas.classList.add('hidden');
@@ -462,17 +300,9 @@
       btnStop.disabled = true;
     }
 
-    function resetCountdown() {
-      stopCountdown();
-      remaining = Math.max(1, Number(secondsInput.value || 12));
-      renderTime();
-      setStatus('Décompte réinitialisé');
-    }
-
     async function startCountdown() {
       ensureAudio();
-      stopCountdown();
-      remaining = Math.max(1, Number(secondsInput.value || 12));
+      remaining = Math.max(1, Number(secondsInput.value || 5));
       renderTime();
       btnStart.disabled = true;
       btnStop.disabled = false;
@@ -483,11 +313,10 @@
         renderTime();
         if (remaining <= 0) {
           stopCountdown();
-          strongBeepPattern();
+          beep(350, 1400, 0.12);
           setStatus('Bip ! Capture photo...');
           await capturePhoto();
-          remaining = Math.max(1, Number(secondsInput.value || 12));
-          renderTime();
+          secondsInput.dispatchEvent(new Event('input'));
         }
       }, 1000);
     }
@@ -505,7 +334,7 @@
     }
 
     secondsInput.addEventListener('input', () => {
-      remaining = Math.max(1, Number(secondsInput.value || 12));
+      remaining = Math.max(1, Number(secondsInput.value || 5));
       renderTime();
     });
 
@@ -513,12 +342,11 @@
     btnStart.addEventListener('click', startCountdown);
     btnStop.addEventListener('click', () => {
       stopCountdown();
-      setStatus('Décompte arrêté');
-      remaining = Math.max(1, Number(secondsInput.value || 12));
+      remaining = Math.max(1, Number(secondsInput.value || 5));
       renderTime();
+      setStatus('Décompte arrêté');
     });
-    btnReset.addEventListener('click', resetCountdown);
-    btnTestBeep.addEventListener('click', strongBeepPattern);
+    btnTestBeep.addEventListener('click', () => beep());
     btnFullscreen.addEventListener('click', toggleFullscreen);
 
     window.addEventListener('beforeunload', stopCamera);

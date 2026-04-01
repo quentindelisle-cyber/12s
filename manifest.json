@@ -1,11 +1,11 @@
 {
-  "name": "Relais 12s",
-  "short_name": "Relais 12s",
-  "description": "Décompte avec bip puissant et photo automatique.",
+  "name": "Décompte Photo",
+  "short_name": "Décompte Photo",
+  "description": "Compte à rebours réglable avec bip final et capture photo automatique.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b1836",
-  "theme_color": "#0b1836",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
   "lang": "fr",
   "orientation": "portrait",
   "icons": [
