@@ -15,7 +15,7 @@
     *{box-sizing:border-box} html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#12376f 0%,var(--bg2) 35%,var(--bg1) 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif} body{min-height:100vh}
     .app{width:min(100%,1120px);margin:0 auto;padding:14px 14px 72px;position:relative}
     .header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .brand{display:flex;align-items:center;gap:14px;min-width:0}.brand img.logo{width:clamp(82px,12vw,110px);height:clamp(82px,12vw,110px);object-fit:cover;border-radius:24px;box-shadow:0 10px 22px rgba(0,0,0,.28)}
+    .brand{display:flex;align-items:center;gap:14px;min-width:0}.brand img.logo{width:clamp(92px,14vw,126px);height:clamp(92px,14vw,126px);object-fit:cover;object-position:center;border-radius:24px;box-shadow:0 10px 22px rgba(0,0,0,.28);display:block;background:transparent}
     .brand-text h1{margin:0;font-size:clamp(1.55rem,3.2vw,2.5rem);line-height:1}.brand-text .sub{margin-top:6px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:clamp(.82rem,1.6vw,1rem)}
     .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.grid{display:grid;grid-template-columns:1fr;gap:16px}@media (min-width:960px){.grid{grid-template-columns:390px 1fr}}
     .card{background:var(--card);border:1px solid var(--card-border);border-radius:26px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.24);backdrop-filter:blur(8px)}.card h2{margin:0 0 14px;font-size:1.08rem}
@@ -153,8 +153,6 @@
     let photoIndex = 0;
     let galleryItems = [];
     let lastObjectUrl = null;
-    let lastObjectUrl = null;
-    const galleryItems = [];
 
     function fmt(seconds) {
       const m = Math.floor(seconds / 60).toString().padStart(2, '0');
