@@ -11,31 +11,255 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="icon-192.png" />
   <style>
-    :root{--bg1:#071225;--bg2:#0b1836;--card:rgba(10,22,48,.90);--card-border:rgba(255,255,255,.14);--text:#f8fbff;--muted:#c5d6f4;--yellow:#f2c94c}
-    *{box-sizing:border-box} html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#12376f 0%,var(--bg2) 35%,var(--bg1) 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif} body{min-height:100vh}
-    .app{width:min(100%,1120px);margin:0 auto;padding:14px 14px 72px;position:relative}
-    .header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .brand{display:flex;align-items:center;gap:14px;min-width:0}.brand img.logo{width:clamp(92px,14vw,126px);height:clamp(92px,14vw,126px);object-fit:cover;object-position:center;border-radius:24px;box-shadow:0 10px 22px rgba(0,0,0,.28);display:block;background:transparent}
-    .brand-text h1{margin:0;font-size:clamp(1.55rem,3.2vw,2.5rem);line-height:1}.brand-text .sub{margin-top:6px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:clamp(.82rem,1.6vw,1rem)}
-    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.grid{display:grid;grid-template-columns:1fr;gap:16px}@media (min-width:960px){.grid{grid-template-columns:390px 1fr}}
-    .card{background:var(--card);border:1px solid var(--card-border);border-radius:26px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.24);backdrop-filter:blur(8px)}.card h2{margin:0 0 14px;font-size:1.08rem}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row+.row{margin-top:12px}.field{display:grid;gap:6px;width:100%}label{font-weight:800}
-    input[type="number"],input[type="text"]{width:100%;background:rgba(3,10,22,.88);color:var(--text);border:1px solid var(--card-border);border-radius:16px;padding:12px 14px;font-size:1rem;font-weight:700}
-    .duration-row{display:grid;grid-template-columns:1fr 90px;gap:10px;align-items:end;width:100%}.unit-box{min-height:49px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:rgba(255,255,255,.08);color:var(--muted);font-weight:800;border:1px solid var(--card-border)}
-    .stepper-row{display:grid;grid-template-columns:72px 1fr 72px;gap:10px;align-items:center;width:100%}
-    .stepper-btn{font-size:2rem;line-height:1;padding:0;min-height:58px;border-radius:18px}
-    .seconds-display{min-height:58px;display:flex;align-items:center;justify-content:center;border-radius:18px;background:rgba(3,10,22,.88);border:1px solid var(--card-border);font-size:2rem;font-weight:900;letter-spacing:.03em}
-    button,a.dl{appearance:none;border:none;border-radius:18px;padding:13px 15px;min-height:50px;font-size:1rem;font-weight:800;color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center}
-    button.full,a.dl.full{width:100%} button.primary{background:linear-gradient(135deg,#1d63ff,#5ba1ff);box-shadow:0 10px 20px rgba(46,121,255,.33)} button.secondary{background:linear-gradient(135deg,#31415f,#5d6f90)} button.success{background:linear-gradient(135deg,#139245,#22c55e);box-shadow:0 10px 20px rgba(34,197,94,.23)} button.warn{background:linear-gradient(135deg,#d29812,#f2c94c);color:#13233f;box-shadow:0 10px 20px rgba(242,201,76,.25)} button.danger{background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 10px 20px rgba(239,68,68,.22)} button:disabled{opacity:.5;cursor:not-allowed}
-    .timer{margin-top:14px;padding:16px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid var(--card-border);text-align:center}.time{font-size:clamp(2.4rem,10vw,4.6rem);line-height:1;font-weight:900;letter-spacing:.03em}.status{margin-top:10px;color:var(--muted);font-weight:700}
-    .video-wrap{position:relative;border-radius:24px;overflow:hidden;background:#020817;border:1px solid var(--card-border);aspect-ratio:16/10} video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-    .camera-overlay{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:space-between;pointer-events:none;padding:12px}.pill{background:rgba(15,23,42,.72);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:8px 12px;font-size:.9rem}
-    .gallery{margin-top:16px}.latest-box{margin-top:10px}.latest-box img{width:100%;border-radius:18px;display:block;border:1px solid var(--card-border);background:#000}
-    .thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:12px}.thumb{background:rgba(255,255,255,.04);border:1px solid var(--card-border);border-radius:16px;overflow:hidden;cursor:pointer;padding:0;text-align:left;color:inherit}.thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#000}.thumb .meta{padding:8px 10px;font-size:.84rem;color:var(--muted);line-height:1.3}
-    .note{color:var(--muted);font-size:.94rem;line-height:1.4}.hidden{display:none!important}.footer{margin-top:18px;color:var(--muted);font-size:.85rem;text-align:center}
-    a.dl{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:white;margin-top:12px;border-radius:16px;min-height:48px;padding:12px 14px;font-weight:700;background:linear-gradient(135deg,#15803d,#22c55e)}
-    .signature{position:fixed;right:12px;bottom:10px;font-size:1rem;font-style:italic;color:rgba(255,255,255,.92);text-shadow:0 2px 10px rgba(0,0,0,.35);z-index:20;pointer-events:none}
-    @media (max-width:640px){.header{align-items:flex-start;flex-direction:column}.top-actions{width:100%;justify-content:stretch}.top-actions button{flex:1}}
+    :root {
+      --bg1: #071225;
+      --bg2: #0b1836;
+      --card: rgba(10,22,48,.90);
+      --card-border: rgba(255,255,255,.14);
+      --text: #f8fbff;
+      --muted: #c5d6f4;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #12376f 0%, var(--bg2) 35%, var(--bg1) 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    body { min-height: 100vh; }
+    .app {
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      padding: 14px 14px 72px;
+      position: relative;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .brand img.logo {
+      width: clamp(92px, 14vw, 126px);
+      height: clamp(92px, 14vw, 126px);
+      object-fit: cover;
+      object-position: center;
+      border-radius: 24px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.28);
+      display: block;
+      background: transparent;
+    }
+    .brand-text h1 { margin: 0; font-size: clamp(1.55rem, 3.2vw, 2.5rem); line-height: 1; }
+    .brand-text .sub {
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      font-size: clamp(.82rem, 1.6vw, 1rem);
+    }
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 960px) {
+      .grid { grid-template-columns: 390px 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.24);
+      backdrop-filter: blur(8px);
+    }
+    .card h2 { margin: 0 0 14px; font-size: 1.08rem; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .row + .row { margin-top: 12px; }
+    .field { display: grid; gap: 6px; width: 100%; }
+    label { font-weight: 800; }
+    input[type="text"] {
+      width: 100%;
+      background: rgba(3,10,22,.88);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .stepper-row {
+      display: grid;
+      grid-template-columns: 72px 1fr 72px;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+    }
+    .stepper-btn {
+      font-size: 2rem;
+      line-height: 1;
+      padding: 0;
+      min-height: 58px;
+      border-radius: 18px;
+    }
+    .seconds-display {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: rgba(3,10,22,.88);
+      border: 1px solid var(--card-border);
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: .03em;
+    }
+    button, a.dl {
+      appearance: none;
+      border: none;
+      border-radius: 18px;
+      padding: 13px 15px;
+      min-height: 50px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    button.full, a.dl.full { width: 100%; }
+    button.primary { background: linear-gradient(135deg, #1d63ff, #5ba1ff); box-shadow: 0 10px 20px rgba(46,121,255,.33); }
+    button.secondary { background: linear-gradient(135deg, #31415f, #5d6f90); }
+    button.success { background: linear-gradient(135deg, #139245, #22c55e); box-shadow: 0 10px 20px rgba(34,197,94,.23); }
+    button.warn { background: linear-gradient(135deg, #d29812, #f2c94c); color: #13233f; box-shadow: 0 10px 20px rgba(242,201,76,.25); }
+    button.danger { background: linear-gradient(135deg, #b91c1c, #ef4444); box-shadow: 0 10px 20px rgba(239,68,68,.22); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .timer {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--card-border);
+      text-align: center;
+    }
+    .time { font-size: clamp(2.4rem, 10vw, 4.6rem); line-height: 1; font-weight: 900; letter-spacing: .03em; }
+    .status { margin-top: 10px; color: var(--muted); font-weight: 700; }
+    .video-wrap {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #020817;
+      border: 1px solid var(--card-border);
+      aspect-ratio: 16/10;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+    .camera-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      pointer-events: none;
+      padding: 12px;
+    }
+    .pill {
+      background: rgba(15,23,42,.72);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .9rem;
+    }
+    .gallery { margin-top: 16px; }
+    .latest-box { margin-top: 10px; }
+    .latest-box img {
+      width: 100%;
+      border-radius: 18px;
+      display: block;
+      border: 1px solid var(--card-border);
+      background: #000;
+    }
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .thumb {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+      color: inherit;
+    }
+    .thumb img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+    .thumb .meta { padding: 8px 10px; font-size: .84rem; color: var(--muted); line-height: 1.3; }
+    .note { color: var(--muted); font-size: .94rem; line-height: 1.4; }
+    .hidden { display: none !important; }
+    .footer { margin-top: 18px; color: var(--muted); font-size: .85rem; text-align: center; }
+    a.dl {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: white;
+      margin-top: 12px;
+      border-radius: 16px;
+      min-height: 48px;
+      padding: 12px 14px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #15803d, #22c55e);
+    }
+    .signature {
+      position: fixed;
+      right: 12px;
+      bottom: 10px;
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 2px 10px rgba(0,0,0,.35);
+      z-index: 20;
+      pointer-events: none;
+    }
+    @media (max-width: 640px) {
+      .header { align-items: flex-start; flex-direction: column; }
+      .top-actions { width: 100%; justify-content: stretch; }
+      .top-actions button { flex: 1; }
+    }
   </style>
 </head>
 <body>
@@ -49,7 +273,7 @@
         </div>
       </div>
       <div class="top-actions">
-        <button id="btnFullscreen" class="warn">Plein écran</button>
+        <button id="btnFullscreen" class="warn" type="button">Plein écran</button>
       </div>
     </div>
 
@@ -83,11 +307,11 @@
           </div>
         </div>
 
-        <div class="row"><button id="btnCamera" class="primary full">Autoriser / démarrer la caméra</button></div>
-        <div class="row"><button id="btnStart" class="success full">Démarrer</button></div>
-        <div class="row"><button id="btnReset" class="warn full">Réinitialiser le décompte</button></div>
-        <div class="row"><button id="btnStop" class="danger full" disabled>Arrêter</button></div>
-        <div class="row"><button id="btnTestBeep" class="secondary full">Tester le bip</button></div>
+        <div class="row"><button id="btnCamera" class="primary full" type="button">Autoriser / démarrer la caméra</button></div>
+        <div class="row"><button id="btnStart" class="success full" type="button">Démarrer</button></div>
+        <div class="row"><button id="btnReset" class="warn full" type="button">Réinitialiser le décompte</button></div>
+        <div class="row"><button id="btnStop" class="danger full" type="button" disabled>Arrêter</button></div>
+        <div class="row"><button id="btnTestBeep" class="secondary full" type="button">Tester le bip</button></div>
 
         <div class="timer">
           <div>
@@ -110,13 +334,13 @@
         <div class="gallery latest-box">
           <h2>Dernière photo finish</h2>
           <img id="photo" alt="Dernière photo capturée" class="hidden" />
-          <a id="downloadLink" class="dl full hidden" download="photo-finish-relais12s.png">Télécharger la dernière photo</a>
+          <a id="downloadLink" class="dl full hidden" download="photo-finish-relais12s.jpg">Télécharger la dernière photo</a>
         </div>
 
         <div class="gallery">
           <div class="row" style="justify-content:space-between;align-items:center;">
             <h2 style="margin:0;">Galerie des photos finish</h2>
-            <button id="btnClearGallery" class="secondary">Effacer la galerie</button>
+            <button id="btnClearGallery" class="secondary" type="button">Effacer la galerie</button>
           </div>
           <div id="galleryGrid" class="thumb-grid"></div>
           <p id="galleryEmpty" class="note">Aucune photo pour le moment.</p>
@@ -155,13 +379,12 @@
 
     let stream = null;
     let countdownTimer = null;
-    let remaining = Number(secondsInput.value || 12);
+    let remaining = 12;
     let audioCtx = null;
     let takingPhoto = false;
     let photoIndex = 0;
     let galleryItems = [];
-    let lastObjectUrl = null;
-    const GALLERY_STORAGE_KEY = 'relais12s_gallery_v1';
+    const GALLERY_STORAGE_KEY = 'relais12s_gallery_v2';
     const MAX_GALLERY_ITEMS = 24;
     const MIN_SECONDS = 1;
     const MAX_SECONDS = 3600;
@@ -171,8 +394,31 @@
       const s = Math.floor(seconds % 60).toString().padStart(2, '0');
       return `${m}:${s}`;
     }
-    function renderTime() { timeDisplay.textContent = fmt(remaining); if (secondsDisplay) secondsDisplay.textContent = `${Math.max(MIN_SECONDS, Number(secondsInput.value || 12))}s`; }
-    function setStatus(text) { statusEl.textContent = text; }
+
+    function clampSeconds(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return 12;
+      return Math.max(MIN_SECONDS, Math.min(MAX_SECONDS, Math.round(n)));
+    }
+
+    function updateSeconds(value) {
+      const sec = clampSeconds(value);
+      secondsInput.value = String(sec);
+      if (secondsDisplay) secondsDisplay.textContent = `${sec}s`;
+      if (!countdownTimer) {
+        remaining = sec;
+        renderTime();
+      }
+      return sec;
+    }
+
+    function renderTime() {
+      timeDisplay.textContent = fmt(remaining);
+    }
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
 
     function ensureAudio() {
       if (!audioCtx) {
@@ -181,6 +427,7 @@
       }
       if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
     }
+
     function makeSingleBeep(duration = 0.22, frequency = 2600, type = 'square', gainValue = 0.55) {
       if (!audioCtx) return;
       const now = audioCtx.currentTime;
@@ -194,8 +441,10 @@
       gain.gain.exponentialRampToValueAtTime(gainValue, now + 0.01);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
       osc.connect(gain).connect(audioCtx.destination);
-      osc.start(now); osc.stop(now + duration + 0.02);
+      osc.start(now);
+      osc.stop(now + duration + 0.02);
     }
+
     function strongBeepPattern() {
       ensureAudio();
       if (!audioCtx) return;
@@ -211,9 +460,15 @@
       try {
         setStatus('Demande d’autorisation caméra...');
         try {
-          stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: { exact: 'environment' } }, audio: false });
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: { exact: 'environment' } },
+            audio: false
+          });
         } catch {
-          stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: { ideal: 'environment' } }, audio: false });
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: { ideal: 'environment' } },
+            audio: false
+          });
         }
         video.srcObject = stream;
         await video.play();
@@ -226,14 +481,20 @@
         console.error(err);
       }
     }
+
     function stopCamera() {
-      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
-      video.srcObject = null; cameraState.textContent = 'Caméra inactive';
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+      video.srcObject = null;
+      cameraState.textContent = 'Caméra inactive';
     }
 
     function stampPhoto(sourceCanvas, durationSeconds, starter, relayeur) {
       const out = document.createElement('canvas');
-      out.width = sourceCanvas.width; out.height = sourceCanvas.height;
+      out.width = sourceCanvas.width;
+      out.height = sourceCanvas.height;
       const ctx = out.getContext('2d');
       ctx.drawImage(sourceCanvas, 0, 0);
 
@@ -241,32 +502,101 @@
       const panelW = Math.min(out.width * 0.84, 900);
       const lineH = Math.max(34, Math.round(out.height * 0.052));
       const panelH = lineH * 4 + pad * 1.4;
-      const x = pad, y = out.height - panelH - pad;
+      const x = pad;
+      const y = out.height - panelH - pad;
       const radius = Math.max(18, Math.round(out.width * 0.018));
 
       ctx.fillStyle = 'rgba(7, 18, 37, 0.72)';
       ctx.strokeStyle = 'rgba(255,255,255,0.22)';
       ctx.lineWidth = Math.max(2, Math.round(out.width * 0.0025));
       ctx.beginPath();
-      ctx.moveTo(x + radius, y); ctx.lineTo(x + panelW - radius, y); ctx.quadraticCurveTo(x + panelW, y, x + panelW, y + radius);
-      ctx.lineTo(x + panelW, y + panelH - radius); ctx.quadraticCurveTo(x + panelW, y + panelH, x + panelW - radius, y + panelH);
-      ctx.lineTo(x + radius, y + panelH); ctx.quadraticCurveTo(x, y + panelH, x, y + panelH - radius); ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + panelW - radius, y);
+      ctx.quadraticCurveTo(x + panelW, y, x + panelW, y + radius);
+      ctx.lineTo(x + panelW, y + panelH - radius);
+      ctx.quadraticCurveTo(x + panelW, y + panelH, x + panelW - radius, y + panelH);
+      ctx.lineTo(x + radius, y + panelH);
+      ctx.quadraticCurveTo(x, y + panelH, x, y + panelH - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
 
       const titleSize = Math.max(28, Math.round(out.width * 0.032));
       const textSize = Math.max(24, Math.round(out.width * 0.024));
       ctx.fillStyle = '#ffffff';
       ctx.font = `700 ${titleSize}px system-ui, Arial, sans-serif`;
       ctx.fillText('PHOTO FINISH', x + pad, y + pad + titleSize);
+
       ctx.font = `700 ${textSize}px system-ui, Arial, sans-serif`;
       ctx.fillText(`Décompte : ${durationSeconds}s`, x + pad, y + pad + titleSize + lineH);
       ctx.fillText(`Démarreur : ${starter || '—'}`, x + pad, y + pad + titleSize + lineH * 2);
       ctx.fillText(`Relayeur : ${relayeur || '—'}`, x + pad, y + pad + titleSize + lineH * 3);
+
       ctx.textAlign = 'right';
       ctx.fillStyle = '#d6e7ff';
       ctx.fillText(new Date().toLocaleString('fr-FR'), x + panelW - pad, y + pad + titleSize + lineH * 3);
       ctx.textAlign = 'left';
+
       return out;
+    }
+
+    function showPhoto(url, index = 0) {
+      photo.src = url;
+      photo.classList.remove('hidden');
+      downloadLink.href = url;
+      downloadLink.download = `photo-finish-relais12s-${String(index + 1).padStart(3, '0')}.jpg`;
+      downloadLink.classList.remove('hidden');
+    }
+
+    function renderGallery() {
+      galleryGrid.innerHTML = '';
+      galleryItems.forEach((item, index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'thumb';
+        btn.innerHTML = `
+          <img src="${item.url}" alt="Photo finish ${index + 1}" />
+          <div class="meta">
+            <div><strong>${item.meta.duration}s</strong></div>
+            <div>Démarreur : ${item.meta.starter || '—'}</div>
+            <div>Relayeur : ${item.meta.relayeur || '—'}</div>
+          </div>
+        `;
+        btn.addEventListener('click', () => showPhoto(item.url, index));
+        galleryGrid.appendChild(btn);
+      });
+      galleryEmpty.classList.toggle('hidden', galleryItems.length > 0);
+      if (galleryItems.length > 0 && photo.classList.contains('hidden')) {
+        showPhoto(galleryItems[0].url, 0);
+      }
+    }
+
+    function saveGallery() {
+      try {
+        localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(galleryItems));
+      } catch (err) {
+        console.warn('Impossible de sauvegarder la galerie', err);
+      }
+    }
+
+    function loadGallery() {
+      try {
+        const raw = localStorage.getItem(GALLERY_STORAGE_KEY);
+        if (!raw) {
+          renderGallery();
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          galleryItems = parsed.filter(item => item && typeof item.url === 'string' && item.meta).slice(0, MAX_GALLERY_ITEMS);
+        }
+      } catch (err) {
+        console.warn('Impossible de charger la galerie', err);
+        galleryItems = [];
+      }
+      renderGallery();
     }
 
     function addToGallery(url, meta) {
@@ -284,7 +614,9 @@
       photo.classList.add('hidden');
       downloadLink.removeAttribute('href');
       downloadLink.classList.add('hidden');
-      try { localStorage.removeItem(GALLERY_STORAGE_KEY); } catch (e) {}
+      try {
+        localStorage.removeItem(GALLERY_STORAGE_KEY);
+      } catch (err) {}
       setStatus('Galerie effacée');
     }
 
@@ -292,15 +624,20 @@
       if (takingPhoto) return;
       takingPhoto = true;
       try {
-        if (!stream) { setStatus('Décompte terminé — pas de caméra active'); return; }
-        const w = video.videoWidth || 1280, h = video.videoHeight || 720;
+        if (!stream) {
+          setStatus('Décompte terminé — pas de caméra active');
+          return;
+        }
+        const w = video.videoWidth || 1280;
+        const h = video.videoHeight || 720;
         const sourceCanvas = document.createElement('canvas');
-        sourceCanvas.width = w; sourceCanvas.height = h;
+        sourceCanvas.width = w;
+        sourceCanvas.height = h;
         sourceCanvas.getContext('2d').drawImage(video, 0, 0, w, h);
 
         const starter = starterNameInput.value.trim();
         const relayeur = relayeurNameInput.value.trim();
-        const durationSeconds = Math.max(1, Number(secondsInput.value || 12));
+        const durationSeconds = clampSeconds(secondsInput.value);
         const stampedCanvas = stampPhoto(sourceCanvas, durationSeconds, starter, relayeur);
         const url = stampedCanvas.toDataURL('image/jpeg', 0.92);
 
@@ -309,47 +646,87 @@
         addToGallery(url, { duration: durationSeconds, starter, relayeur, createdAt: new Date().toISOString() });
         setStatus('Photo capturée');
       } catch (err) {
-        console.error(err); setStatus('Erreur pendant la capture');
-      } finally { takingPhoto = false; }
+        console.error(err);
+        setStatus('Erreur pendant la capture');
+      } finally {
+        takingPhoto = false;
+      }
     }
 
     function stopCountdown() {
-      if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
-      btnStart.disabled = false; btnStop.disabled = true;
+      if (countdownTimer) {
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+      }
+      btnStart.disabled = false;
+      btnStop.disabled = true;
     }
+
     function resetCountdown() {
-      stopCountdown(); remaining = clampSeconds(secondsInput.value); renderTime(); setStatus('Décompte réinitialisé');
+      stopCountdown();
+      remaining = clampSeconds(secondsInput.value);
+      renderTime();
+      setStatus('Décompte réinitialisé');
     }
+
     async function startCountdown() {
-      ensureAudio(); stopCountdown();
-      remaining = clampSeconds(secondsInput.value); renderTime();
-      btnStart.disabled = true; btnStop.disabled = false; setStatus('Décompte en cours...');
+      ensureAudio();
+      stopCountdown();
+      remaining = clampSeconds(secondsInput.value);
+      renderTime();
+      btnStart.disabled = true;
+      btnStop.disabled = false;
+      setStatus('Décompte en cours...');
       countdownTimer = setInterval(async () => {
-        remaining -= 1; renderTime();
+        remaining -= 1;
+        renderTime();
         if (remaining <= 0) {
-          stopCountdown(); strongBeepPattern(); setStatus('Bip ! Capture photo...');
-          await capturePhoto(); remaining = clampSeconds(secondsInput.value); renderTime();
+          stopCountdown();
+          strongBeepPattern();
+          setStatus('Bip ! Capture photo...');
+          await capturePhoto();
+          remaining = clampSeconds(secondsInput.value);
+          renderTime();
         }
       }, 1000);
     }
+
     async function toggleFullscreen() {
-      try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); }
-      catch (err) { console.warn('Plein écran non disponible', err); }
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (err) {
+        console.warn('Plein écran non disponible', err);
+      }
     }
 
-    btnMinus.addEventListener('click', () => updateSeconds(clampSeconds(Number(secondsInput.value || 12) - 1)));
-    btnPlus.addEventListener('click', () => updateSeconds(clampSeconds(Number(secondsInput.value || 12) + 1)));
+    btnMinus.addEventListener('click', () => updateSeconds(Number(secondsInput.value || 12) - 1));
+    btnPlus.addEventListener('click', () => updateSeconds(Number(secondsInput.value || 12) + 1));
     btnCamera.addEventListener('click', startCamera);
     btnStart.addEventListener('click', startCountdown);
-    btnStop.addEventListener('click', () => { stopCountdown(); setStatus('Décompte arrêté'); remaining = clampSeconds(secondsInput.value); renderTime(); });
+    btnStop.addEventListener('click', () => {
+      stopCountdown();
+      setStatus('Décompte arrêté');
+      remaining = clampSeconds(secondsInput.value);
+      renderTime();
+    });
     btnReset.addEventListener('click', resetCountdown);
     btnTestBeep.addEventListener('click', strongBeepPattern);
     btnFullscreen.addEventListener('click', toggleFullscreen);
-    btnClearGallery?.addEventListener('click', clearGallery);
+    btnClearGallery.addEventListener('click', clearGallery);
     window.addEventListener('beforeunload', stopCamera);
-    updateSeconds(secondsInput.value);
+
+    updateSeconds(12);
     loadGallery();
-    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(console.error); }); }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(console.error);
+      });
+    }
   </script>
 </body>
 </html>
